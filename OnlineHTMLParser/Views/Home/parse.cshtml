@@ -1,0 +1,44 @@
+﻿@model OnlineHTMLParser.Models.FileModel
+
+@{
+    ViewBag.Title = "parse";
+}
+
+@using (Html.BeginForm("parse", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))  {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>FileModel </legend>
+      
+        <div class="editor-label">
+           <strong>Parser Type</strong>
+        </div>
+        <div class="editor-field">
+           <select class="form-control" name="type" required>
+        <option value="html">Html Parser</option>
+        <option  value="razor">Razor Parser</option>
+          <option  value="both">Both Parser</option>
+    </select>
+        </div>
+          <div class="editor-label">
+         
+               <strong>Browse File&nbsp;(Accept HTML,CSHTML,TEXT)</strong>
+        </div>
+        <div class="editor-field">
+            <input type="file" name="files" id="filepicker" multiple="multiple" accept=".html,.cshtml" webkitdirectory mozdirectory required />
+       
+            @Html.ValidationMessageFor(model => model.files)
+           
+        </div>
+        <p>
+                <h1>@ViewBag.Message</h1>  
+            <input type="submit" value="Submit" />
+        </p>
+         <ul id="listing"></ul>
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

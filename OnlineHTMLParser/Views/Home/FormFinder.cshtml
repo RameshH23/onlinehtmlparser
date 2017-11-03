@@ -1,0 +1,60 @@
+﻿<br />
+ <form method="get" action="/home/FormExport" >
+       <input type="hidden" name="parsefolder" value="@ViewBag.parsefolder" />
+                <input type="hidden" name="type" value="@ViewBag.Type" />
+      <span class="input-group-btn" >
+                <button type="submit" class="btn btn-success btn-sm" ><i class="fa fa-print" aria-hidden="true"></i> Export Report to Excel</button>
+                        </span>
+     </form>
+<br />
+ <table class="table table-striped" id="myTable">
+    <thead class="fixedh">
+        <tr class="success">
+             <td><strong>Name</strong></td>
+          <td><strong>Location</strong></td>
+        <td><strong>Extention</strong></td>
+        <td><strong>Total Lines</strong></td>
+        <td><strong>Form Tag</strong></td>
+            </tr>
+        </thead>
+     <tbody>
+        
+             @if (ViewData["Forms"] != null)
+{
+    foreach (var std in ViewData["Forms"] as IList<OnlineHTMLParser.Controllers.FormData>)
+    {
+        if (std.Tagsdata.Where(s=>s.Tags!="").Select(s=>s.linenumber).ToList().Count>0)
+        {
+         <tr>
+        <td>@std.FileName</td>
+        <td>@std.FileLocation</td>
+        <td>@std.Extension</td>
+        <td>@std.TotalLine </td>
+                 <td>
+                     <table class="table table-striped">
+                      <thead>
+                      <tr>
+                          <td ><strong>Line No</strong></td>
+                          <td ><strong>Original MarkUp</strong></td>
+                           
+                      </tr>
+                          </thead>
+                      <tbody>
+        @foreach(var s in std.Tagsdata.Where(s=>s.Tags!="").ToList())
+        {
+      <tr>
+          <td>@s.linenumber</td>
+          <td>@s.Tags.Substring(0,(s.Tags.Count()>50)?50:s.Tags.Count())<span>....</span></td>     
+</tr>
+}
+                           </tbody>
+            </table> 
+   
+                     </td>
+              </tr>
+             }
+    }
+}
+        
+     </tbody>
+     </table>

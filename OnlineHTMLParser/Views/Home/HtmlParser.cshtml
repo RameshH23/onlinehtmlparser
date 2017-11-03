@@ -1,0 +1,194 @@
+﻿@{
+    ViewBag.Title = "HtmlParser";
+    Layout = "~/Views/Shared/_ParserLayout.cshtml";
+}
+
+@if (ViewBag.Error == null || ViewBag.Error=="")
+{
+    if (ViewBag.SystemError != null && ViewBag.SystemError != "")
+{  
+     <div class="alert alert-danger">
+  <strong>@ViewBag.SystemError</strong>
+</div>
+   }
+else
+{
+        <br />
+    
+ <table class="table table-striped" id="myTable">
+    <thead class="fixedh">
+        <tr class="success">
+    
+            <td colspan="2" style="text-align:center;width:25%"  ><h5>@ViewBag.parsefolder - Location Files (@ViewBag.TotalFiles) - <span style="text-transform:uppercase">@ViewBag.Type</span> Parser</h5> </td><td class="text-right" colspan="3" >
+                
+                    <form method="get" action="/home/ExportToExcel" >
+                <div class="input-group">
+                <select style="padding: 7.9px;border-color: #e2e2e2;position: relative;top: 0px;" name="name" class="pagefilter">
+                    <option value="">All</option>
+                    @{
+    int keys = 0;
+                    }
+                            @if (ViewData["files"]!=null)
+        {
+foreach (var std in ViewData["files"] as IList<OnlineHTMLParser.Controllers.Files>)
+{
+            
+    int last1 = std.FileName.LastIndexOf(@".");
+                                 <option value="@std.FileName">@std.FileName.Substring(0,last1)</option>
+    keys++;
+}
+ }
+                </select>
+                <input type="hidden" name="parsefolder" value="@ViewBag.parsefolder" />
+                <input type="hidden" name="type" value="@ViewBag.Type" />
+                       <select id="filter"  name="filter" multiple="multiple">
+                         <option value="">Search By Tags</option>
+                @foreach(var t in ViewBag.Tags)
+                {
+         
+                    string filteredstring = t;
+          
+                    <option value="@filteredstring.Replace(".","")">@t</option>
+                }
+            </select>
+             <br />
+                    <span class="input-group-btn" >
+                <button type="submit" class="btn btn-success btn-sm" ><i class="fa fa-print" aria-hidden="true"></i> Export Report to Excel</button>
+                        </span>
+                     </div>
+            </form>
+              </td>
+        </tr>
+      <tr class="text-center backgr">
+        <td><strong>Name</strong></td>
+          <td><strong>Location</strong></td>
+        <td><strong>Extention</strong></td>
+        <td><strong>Total Lines</strong></td>
+        <td><strong>Source</strong></td>
+        
+      </tr>
+    </thead>
+    <tbody>
+        @{
+            int key = 1;
+        }   
+        @if (ViewData["files"]!=null)
+        {
+foreach (var std in ViewData["files"] as IList<OnlineHTMLParser.Controllers.Files>)
+{
+
+          <tr class="text-center pages page-@key" >
+        <td> 
+             @{
+    int last1 = std.FileName.LastIndexOf(@".");
+                  }
+                 <strong>File:</strong> @std.FileName.Substring(0,last1)
+        </td>
+              <td>  @{
+    int last = std.FileLocation.LastIndexOf(@"\");
+                  }
+                  @std.FileLocation.Substring(0,last)
+
+              </td>
+        <td> @std.Extension.Remove(0,1).ToUpper()</td>
+              <td> @std.TotalLine</td>
+              <td>
+                
+                  <a class="source-@key viewsource" style="cursor:pointer"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                  <div class="sourceans-@key defaultclass">
+                  <textarea class="allsource" readonly>FileName: @std.FileName.Substring(0,last1)@Html.Raw("\n")@Html.Raw("\n")@Html.Raw("\n")@std.SourceCode</textarea>
+                      <a style="cursor:pointer" class="closes">Close</a>
+                      </div>
+              </td>
+              </tr>
+              <tr>
+              <td colspan="5">
+                  <table class="table table-striped">
+                      <thead>
+                      <tr>
+                          <td ><strong>Tags</strong></td>
+                          <td ><strong>Original MarkUp</strong></td>
+                           
+                      </tr>
+                          </thead>
+                      <tbody>
+ @foreach (var tags in std.Tagsdata)
+                         {
+      if(tags.LineS.Count!=0)
+                                  {
+                          <tr class="ohp-@tags.TagName.Replace(".","") showall">
+
+                              <td >
+
+                                 <span class="label label-default">@tags.TagName</span> 
+                              </td>
+                              <td class="text-left">
+                                  @if(tags.LineS.Count!=0)
+                                  {
+                                  <table class="table table-bordered">
+                                     <tr>
+                                         <td>Line</td>
+                                          <td >Code</td>
+                                      
+                                     </tr>
+                                      @{
+                                          int loop=0;
+                                      }
+                                          @foreach (var ln in tags.LineS)
+                                      {
+                                               <tr>
+                                         <td>@tags.LineNumber[loop].</td> <td><code>@ln.LineString</code><br />
+                                                @if (ln.attribute.Count() != 0)
+                                  {
+                                  <table class="table table-bordered">
+                                     <tr>
+                                         <td>Attribute</td>
+                                          <td>Value</td>
+                                     </tr>
+                           
+                                        
+                                                @foreach (var att in ln.attribute)
+                                                {
+                                               <tr>
+                                        <td><span class="label label-primary">@att.Name</span></td> <td><i>@att.Value</i></td>
+                                                     </tr>
+                                             
+                                      }
+                                        
+                                    
+                                  </table>
+                                 
+                                  }
+                                                                          </td>
+                                                  
+                                                     </tr>
+                                              loop++;
+                                      }
+                                    
+                                  </table>
+                                 
+                                  }
+                              </td>
+                          
+                          </tr>
+      }
+ }
+                      </tbody>
+                  </table>
+              </td>
+                  </tr>
+
+     
+    key++;
+}
+        }
+    </tbody>
+  </table>
+   }
+}
+else
+{
+    <div class="alert alert-danger">
+  <strong>Invalid Url!</strong>
+</div>
+}

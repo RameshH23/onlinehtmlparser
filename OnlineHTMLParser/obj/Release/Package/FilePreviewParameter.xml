@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="onlineparser" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\muthu\\Documents\\Visual\ Studio\ 2012\\Projects\\OnlineHTMLParser\\OnlineHTMLParser\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\muthu\\Documents\\Visual\ Studio\ 2012\\Projects\\OnlineHTMLParser\\OnlineHTMLParser\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="" value="Data Source=SERVER;Initial Catalog=HtmlParser;Integrated Security=False;User ID=sa;Password=united@123;MultipleActiveResultSets=True" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\muthu\\Documents\\Visual\ Studio\ 2012\\Projects\\OnlineHTMLParser\\OnlineHTMLParser\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>

@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Parser - United Techno</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+        <style>
+                 .defaultclass {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    height:100%;
+    display:none;
+}
+                  .closes {
+    position: fixed;
+    top: 0px;
+    left: 28%;
+    background-color:red;
+    color:#FFF;
+
+}
+                  table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+                  div#myTable_filter {
+    display: none;
+}
+                    .defaultclass textarea {
+
+    height:100%;
+}
+.fixed-header {
+    position: fixed;
+    top: 0;
+    width: 72%;
+}
+  .fixed-header .backgr {
+            background:#FFF;
+            }
+  span.select2-selection.select2-selection--multiple {
+    border-radius: 0px !important;
+    border-color: #e2e2e2 !important;
+    padding: 1.5px;
+margin-right: 3px;
+      margin-left: 2px;
+}
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink("UnitedTechno", "Index", "Home")</p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                   
+                    </section>
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                             <li>@Html.ActionLink("Parser", "Parse", "Home")</li>
+                             <li>@Html.ActionLink("Form Parser", "FormParser", "Home")</li>
+                        </ul>
+                    </nav>
+                   
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+        <div class="container">
+                @RenderBody()
+            </div>
+      
+        </div>
+     
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script>
+
+
+            $("#filter").change(function () {
+              
+                if ($(this).val() != "") {
+                    $(".showall").hide();
+                    var data = $(this).val().toString().split(",");
+                    $.each(data, function (index, value) {
+                        $(".ohp-" + value).show();
+                    });
+                   
+                }
+                else {
+                    $(".showall").show();
+                }
+            });
+            $(".viewsource").click(function () {
+                $(".defaultclass").hide();
+             
+                $(".sourceans-" + $(this).attr("class").split(" ")[0].split("-")[1]).show();
+            });
+            $(document).ready(function () {
+                $('#filter').select2({ placeholder: "Search by Tags" });
+            });
+            $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+            $(".closes").click(function () {
+
+                $(".defaultclass").hide();
+            });
+            $(window).scroll(function () {
+                if ($(window).scrollTop() >= 130) {
+                    $('.fixedh').addClass('fixed-header');
+                }
+                else {
+                    $('.fixedh').removeClass('fixed-header');
+                }
+            });
+            $(".pagefilter").change(function () {
+                if ($(this).prop('selectedIndex') == 0) {
+                    $(".pages").show();
+                }
+                else
+                {
+                    $(".pages").hide();
+                    $(".page-" + $(this).prop('selectedIndex')).show();
+                }
+            });
+        </script>
+    </body>
+</html>
