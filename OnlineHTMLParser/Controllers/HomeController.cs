@@ -18,7 +18,7 @@ namespace OnlineHTMLParser.Controllers
 {
     public class HomeController : Controller
     {
-        /* Home Controller */
+        /* Home Controller s */
 
         public ActionResult Index()
         {
